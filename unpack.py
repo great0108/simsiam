@@ -46,6 +46,6 @@ def unpack(base_dir,
 
 
 if __name__ == '__main__':
-    base_dir   = '/Users/jason/Desktop/data'
-    target_dir = '/Users/jason/Desktop/data/ImageNet'
+    base_dir   = 'C:/Users/onlyb/Documents/연구/simsiam/raw_data'
+    target_dir = 'C:/Users/onlyb/Documents/연구/simsiam/data'
     unpack(base_dir, target_dir)

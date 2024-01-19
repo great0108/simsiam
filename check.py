@@ -28,5 +28,5 @@ def check(ImageNet_dir):
 
 
 if __name__ == '__main__':
-    ImageNet_dir = '/Users/jason/Desktop/data/ImageNet/'
+    ImageNet_dir = 'C:/Users/onlyb/Documents/연구/simsiam/data'
     check(ImageNet_dir)
