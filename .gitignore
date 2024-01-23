@@ -2,7 +2,12 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=emacs,jetbrains+all,jupyternotebooks,linux,macos,microsoftoffice,notepadpp,python,tortoisegit,vim,visualstudiocode,windows
 
 data/
-raw_data/
+raw_ImageNet/
+ImageNet/
+raw_Cifar10/
+Cifar10/
+checkpoint/
+*.tar
 
 ### Emacs ###
 # -*- mode: gitignore; -*-

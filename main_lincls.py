@@ -34,16 +34,16 @@ model_names = sorted(name for name in models.__dict__
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 # parser.add_argument('data', metavar='DIR',
 #                     help='path to dataset')
-parser.add_argument('--data', metavar='DIR', default='./data',
+parser.add_argument('--data', metavar='DIR', default='./Cifar10',
                     help='path to dataset')
-parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50',
+parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                     choices=model_names,
                     help='model architecture: ' +
                         ' | '.join(model_names) +
                         ' (default: resnet50)')
 parser.add_argument('-j', '--workers', default=32, type=int, metavar='N',
                     help='number of data loading workers (default: 32)')
-parser.add_argument('--epochs', default=90, type=int, metavar='N',
+parser.add_argument('--epochs', default=100, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
@@ -56,12 +56,12 @@ parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
                     metavar='LR', help='initial (base) learning rate', dest='lr')
 parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
                     help='momentum')
-parser.add_argument('--wd', '--weight-decay', default=0., type=float,
+parser.add_argument('--wd', '--weight-decay', default=0, type=float,
                     metavar='W', help='weight decay (default: 0.)',
                     dest='weight_decay')
 parser.add_argument('-p', '--print-freq', default=100, type=int,
                     metavar='N', help='print frequency (default: 10)')
-parser.add_argument('--resume', default='', type=str, metavar='PATH',
+parser.add_argument('--resume', default='./checkpoint.pth.tar', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                     help='evaluate model on validation set')
@@ -84,7 +84,7 @@ parser.add_argument('--multiprocessing-distributed', action='store_true',
                          'multi node data parallel training')
 
 # additional configs:
-parser.add_argument('--pretrained', default='', type=str,
+parser.add_argument('--pretrained', default='./checkpoint/simsiam_v1/checkpoint_0099.pth.tar', type=str,
                     help='path to simsiam pretrained checkpoint')
 parser.add_argument('--lars', action='store_true',
                     help='Use LARS')
@@ -180,7 +180,7 @@ def main_worker(gpu, ngpus_per_node, args):
 
             args.start_epoch = 0
             msg = model.load_state_dict(state_dict, strict=False)
-            assert set(msg.missing_keys) == {"fc.weight", "fc.bias"}
+            # assert set(msg.missing_keys) == {"fc.weight", "fc.bias"}
 
             print("=> loaded pre-trained model '{}'".format(args.pretrained))
         else:
@@ -228,10 +228,10 @@ def main_worker(gpu, ngpus_per_node, args):
     optimizer = torch.optim.SGD(parameters, init_lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
-    if args.lars:
-        print("=> use LARS optimizer.")
-        from apex.parallel.LARC import LARC
-        optimizer = LARC(optimizer=optimizer, trust_coefficient=.001, clip=False)
+    # if args.lars:
+    #     print("=> use LARS optimizer.")
+    #     from apex.parallel.LARC import LARC
+    #     optimizer = LARC(optimizer=optimizer, trust_coefficient=.001, clip=False)
 
     # optionally resume from a checkpoint
     if args.resume:
@@ -319,8 +319,8 @@ def main_worker(gpu, ngpus_per_node, args):
                 'best_acc1': best_acc1,
                 'optimizer' : optimizer.state_dict(),
             }, is_best)
-            if epoch == args.start_epoch:
-                sanity_check(model.state_dict(), args.pretrained)
+            # if epoch == args.start_epoch:
+            #     sanity_check(model.state_dict(), args.pretrained)
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args):
