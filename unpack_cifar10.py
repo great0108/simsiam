@@ -13,11 +13,12 @@ if __name__ == "__main__":
     transform_train = transforms.Compose([
         transforms.ToTensor(),
     ])
+    num_workers = 16
 
     train_dataset = torchvision.datasets.CIFAR10(root='./raw_Cifar10', train=True, download=True, transform=transform_train)
     test_dataset = torchvision.datasets.CIFAR10(root='./raw_Cifar10', train=False, download=True, transform=transform_train)
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, num_workers=32)
-    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=128, shuffle=True, num_workers=32)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, num_workers=num_workers)
+    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=128, shuffle=True, num_workers=num_workers)
     
 
     import os
@@ -59,6 +60,6 @@ if __name__ == "__main__":
     from torchvision.datasets import ImageFolder
 
     train_dataset = ImageFolder(root='./Cifar10/train', transform=transform_train)
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, num_workers=32)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, num_workers=num_workers)
     test_dataset = ImageFolder(root='./Cifar10/val', transform=transform_train)
-    test_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, num_workers=32)
+    test_loader = torch.utils.data.DataLoader(train_dataset, batch_size=128, shuffle=True, num_workers=num_workers)
