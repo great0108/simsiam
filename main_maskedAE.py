@@ -88,8 +88,8 @@ parser.add_argument('--multiprocessing-distributed', action='store_true',
                          'multi node data parallel training')
 
 # simsiam specific configs:
-parser.add_argument('--mask_ratio', default=0.75, type=int,
-                    help='mask ratio (default: 0.75)')
+parser.add_argument('--mask_ratio', default=0.6, type=int,
+                    help='mask ratio (default: 0.6)')
 parser.add_argument('--dim', default=2048, type=int,
                     help='feature dimension (default: 2048)')
 parser.add_argument('--pred-dim', default=512, type=int,
@@ -246,7 +246,8 @@ def main_worker(gpu, ngpus_per_node, args):
 
     # MoCo v2's aug: similar to SimCLR https://arxiv.org/abs/2002.05709
     augmentation = [
-        transforms.RandomResizedCrop(224, scale=(0.2, 1.)),
+        # transforms.RandomResizedCrop(224, scale=(0.2, 1.)),
+        transforms.RandomResizedCrop(32, scale=(0.2, 1.)),
         transforms.RandomApply([
             transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)  # not strengthened
         ], p=0.8),
